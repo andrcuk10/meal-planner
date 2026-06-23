@@ -1,0 +1,22 @@
+{
+  "exclude": ["./coverage", "./dist", "**/*.test.ts", "jest.config.js", "eslint.config.mjs"],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  },
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "rootDir": "./src",
+    // izbrisace se u verziji 7.0
+    "moduleResolution": "node10",
+    "ignoreDeprecations": "6.0",
+    "checkJs": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true
+  }
+}
