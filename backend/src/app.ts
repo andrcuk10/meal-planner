@@ -8,6 +8,11 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 
+// nepostojece rute
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ code: 'ROUTE_NOT_FOUND' });
+});
+
 // Global Error Handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof AppError) {
