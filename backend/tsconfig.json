@@ -20,6 +20,8 @@
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    // for extending request
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   }
 }
