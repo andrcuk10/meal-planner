@@ -1,5 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import authRoutes from './routes/auth.routes';
+import ingredientRoutes from './routes/ingredient.routes';
 import { AppError } from './types/errors';
 
 const app: Application = express();
@@ -7,6 +8,7 @@ const app: Application = express();
 app.use(express.json());
 
 app.use('/auth', authRoutes);
+app.use('/ingredients', ingredientRoutes);
 
 // nepostojece rute
 app.use((req: Request, res: Response) => {
