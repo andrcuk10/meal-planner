@@ -1,5 +1,13 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from './User';
+import { Step } from './Step';
 
 @Entity('recipes')
 export class Recipe {
@@ -17,4 +25,7 @@ export class Recipe {
 
   @ManyToOne(() => User, (author) => author.recipes)
   author: User;
+
+  @OneToMany(() => Step, (step) => step.recipe)
+  steps: Step[];
 }
