@@ -33,7 +33,7 @@ export class RecipeIngredient {
   unit: UnitMeasure;
 
   @Column({ nullable: true })
-  note?: string | null;
+  note?: string;
 
   @ManyToOne(() => Recipe, (recipe) => recipe.recipeIngredients, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'recipe_id' })
