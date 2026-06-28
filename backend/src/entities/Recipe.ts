@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { User } from './User';
 import { Step } from './Step';
+import { RecipeIngredient } from './RecipeIngredient';
 
 @Entity('recipes')
 export class Recipe {
@@ -28,4 +29,7 @@ export class Recipe {
 
   @OneToMany(() => Step, (step) => step.recipe)
   steps: Step[];
+
+  @OneToMany(() => RecipeIngredient, (recipeIngredient) => recipeIngredient.recipe)
+  recipeIngredients: RecipeIngredient[];
 }
