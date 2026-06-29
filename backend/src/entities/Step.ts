@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Recipe } from './Recipe';
 
 @Entity('steps')
+@Unique('uq_steps_step_num_recipe', ['step_num', 'recipe'])
 export class Step {
   @PrimaryGeneratedColumn('uuid')
   id: string;
