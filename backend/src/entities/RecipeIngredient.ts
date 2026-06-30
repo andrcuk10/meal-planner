@@ -17,12 +17,6 @@ export class RecipeIngredient {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ insert: false, update: false })
-  recipe_id: string;
-
-  @Column({ insert: false, update: false })
-  ingredient_id: string;
-
   @Column()
   quantity: number;
 
