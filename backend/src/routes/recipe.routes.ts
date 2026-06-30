@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', RecipeController.getAllRecipes);
 router.get('/:id', RecipeController.getRecipe);
 router.post('/', authenticate, validate(createRecipeSchema), RecipeController.createRecipe);
-router.patch('/:id', authenticate, validate(updateRecipeSchema), RecipeController.updateRecipe);
+router.patch('/:id', authenticate, validate(createRecipeSchema), RecipeController.updateRecipe);
 router.delete('/:id', authenticate, RecipeController.deleteRecipe);
 
 export default router;

@@ -25,11 +25,11 @@ export const RecipeController = {
   async updateRecipe(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { name, isPublic } = req.body;
+      const { name, isPublic, steps, ingredients } = req.body;
 
       const recipe = await RecipeService.updateRecipe(
         id as string,
-        { name, isPublic },
+        { name, isPublic, ingredients, steps },
         req.userId as string,
       );
       res.status(200).json({ recipe_id: recipe.id });

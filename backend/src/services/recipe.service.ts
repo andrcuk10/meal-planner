@@ -20,17 +20,59 @@ export const RecipeService = {
     return recipe;
   },
 
-  async updateRecipe(id: string, data: Partial<CreateRecipeDto>, user_id: string) {
+  async updateRecipe(id: string, data: BaseRecipeDto, user_id: string) {
     const recipe = await RecipeRepository.findById(id);
     if (!recipe) throw new AppError('NO_SUCH_ENTITY', 404);
 
     if (recipe.author.id !== user_id) throw new AppError('NOT_YOURS', 403);
 
-    if (data.isPublic !== undefined) recipe.isPublic = data.isPublic;
-    if (data.name) recipe.name = data.name;
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    const savedRecipe = await RecipeRepository.update(recipe);
-    return savedRecipe;
+    try {
+      // brisemo sve step-ove od naseg recepta
+      await queryRunner.manager.delete(Step, { recipe: { id } });
+      // brisemo sve recipe_ingredients od naseg recepta
+      await queryRunner.manager.delete(RecipeIngredient, { recipe: { id } });
+
+      await queryRunner.manager.update(
+        Recipe,
+        { id },
+        {
+          name: data.name,
+          isPublic: data.isPublic,
+        },
+      );
+
+      const steps = data.steps.map((s) =>
+        queryRunner.manager.create(Step, {
+          step_num: s.step_num,
+          step_text: s.step_text,
+          recipe: { id: recipe.id },
+        }),
+      );
+      await queryRunner.manager.save(steps);
+
+      const recipeIngredients = data.ingredients.map((i) =>
+        queryRunner.manager.create(RecipeIngredient, {
+          quantity: i.quantity,
+          unit: i.unit,
+          note: i.note,
+          recipe: { id: recipe.id },
+          ingredient: { id: i.ingredient.ingredient_id },
+        }),
+      );
+      await queryRunner.manager.save(recipeIngredients);
+
+      await queryRunner.commitTransaction();
+      return recipe;
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw err;
+    } finally {
+      await queryRunner.release();
+    }
   },
 
   async deleteRecipe(id: string, user_id: string) {
